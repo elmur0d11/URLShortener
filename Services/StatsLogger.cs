@@ -5,14 +5,17 @@ namespace URLShortener.Services
 {
     public class StatsLogger
     {
+        //Connecting DB
         private readonly ApplicationDbContext _context;
         public StatsLogger(ApplicationDbContext context)
         {
             _context = context;
         }
 
+        //Save Logs to DB
         public void SaveLog(string shortKey, string ip, string userAgent)
         {
+            //Mapping
             var log = new VisitLog
             {
                 ShortKey = shortKey,

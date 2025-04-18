@@ -4,7 +4,6 @@ using HangfireBasicAuthenticationFilter;
 using Microsoft.EntityFrameworkCore;
 using URLShortener.Data;
 using URLShortener.Entity;
-using URLShortener.Extensions;
 using URLShortener.Models;
 using URLShortener.Services;
 
@@ -39,6 +38,7 @@ app.UseHangfireDashboard("/hangfire", new DashboardOptions()
     {
         new HangfireCustomBasicAuthenticationFilter()
         {
+            //Passwords to dashboard
             Pass = "GJMRTGZEOK",
             User = "L034UURRDV"
         }
@@ -51,7 +51,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 
-    app.ApplyMigrations();
 }
 
 //Create_Short_URL
@@ -103,7 +102,7 @@ app.MapGet("api/{code}", async (
     var ip = httpContext?.Connection?.RemoteIpAddress?.ToString() ?? "unknown";
     var userAgent = httpContext?.Request?.Headers["User-Agent"].ToString() ?? "unknown";
 
-    // Write data to hangfire
+    // Write statistic's data to hangfire
     backgroundJobs.Enqueue<StatsLogger>(logger =>
     logger.SaveLog(code, ip, userAgent));
 
